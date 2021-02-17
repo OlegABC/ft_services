@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/17 14:40:23 by tmatis            #+#    #+#              #
-#    Updated: 2021/02/17 15:54:24 by tmatis           ###   ########.fr        #
+#    Updated: 2021/02/17 16:26:54 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,8 +27,10 @@ else
 	rm -rf docker-20.10.3.tgz
 	sudo cp docker/* /usr/bin/
 	rm -rf ./docker/
-	sudo dockerd &
-	sudo groupadd docker
+	printf "\033[0;34mInit docker: "
+	sudo dockerd &> /dev/null &
+	printf "\033[0;32m[OK]\n\033[0m"
+	sudo groupadd docker > /dev/null
 	sudo usermod -aG docker ${USER}
-	su -s ${USER}
+	printf "Group added..\n";
 fi
