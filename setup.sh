@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/17 14:40:23 by tmatis            #+#    #+#              #
-#    Updated: 2021/02/17 16:26:54 by tmatis           ###   ########.fr        #
+#    Updated: 2021/02/18 13:57:32 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,38 @@ else
 	printf "\033[0;34mInit docker: "
 	sudo dockerd &> /dev/null &
 	printf "\033[0;32m[OK]\n\033[0m"
-	sudo groupadd docker > /dev/null
+	sudo groupadd docker &> /dev/null
 	sudo usermod -aG docker ${USER}
-	printf "Group added..\n";
 fi
+
+printf "\033[0;34mVerifing if minikube is installed: ";
+
+if [ -x "$(command -v minikube)" ]; then
+	printf "\033[0;32m[OK]\n"
+else
+	printf "\033[0;31m[KO]\n"
+	printf "\033[0;34mDownloading minikube ...\n";
+	wget -q --show-progress https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+	printf "Installing minikube ...\n";
+	sudo install minikube-linux-amd64 /usr/bin/minikube
+	rm -rf minikube-linux-amd64
+fi
+
+printf "\033[0;34mVerifing if kubectl is installed: ";
+
+if [ -x "$(command -v kubectl)" ]; then
+	printf "\033[0;32m[OK]\n"
+else
+	printf "\033[0;31m[KO]\n"
+	printf "\033[0;34mDownloading kubectl  ...\n";
+	wget -q --show-progress https://storage.googleapis.com/kubernetes-release/release/v1.20.0/bin/linux/amd64/kubectl
+	printf "Installing kubectl ...\n";
+	chmod +x ./kubectl
+	sudo mv ./kubectl /usr/bin/kubectl
+fi
+
+printf "\033[0;34mStarting minikube 🤩\n";
+minikube --vm-driver=docker start
+printf "\033[0;34mSetup Kubernetes\n";
+
+eval $(minikube docker-env)
