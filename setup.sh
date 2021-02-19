@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/17 14:40:23 by tmatis            #+#    #+#              #
-#    Updated: 2021/02/18 13:57:32 by tmatis           ###   ########.fr        #
+#    Updated: 2021/02/19 12:32:06 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,5 +63,10 @@ fi
 printf "\033[0;34mStarting minikube 🤩\n";
 minikube --vm-driver=docker start
 printf "\033[0;34mSetup Kubernetes\n";
-
+minikube addons enable ingress
+minikube addons enable dashboard
+echo "Launching dashboard 🖥️"
+#minikube dashboard &> /dev/null &
 eval $(minikube docker-env)
+IP=$(kubectl get node -o=custom-columns='DATA:status.addresses[0].address' | sed -n 2p)
+printf "Minikube IP: ${IP}"
