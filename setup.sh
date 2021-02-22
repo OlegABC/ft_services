@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/17 14:40:23 by tmatis            #+#    #+#              #
-#    Updated: 2021/02/19 19:38:39 by tmatis           ###   ########.fr        #
+#    Updated: 2021/02/20 22:09:59 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,13 +61,13 @@ fi
 
 printf "\033[0;34mStarting minikube 🤩\n";
 minikube --vm-driver=docker start 
-printf "\033[0;34mSetup Kubernetes\n";
-minikube addons enable ingress
+printf "\033[0;34mSetup metallb\n";
+minikube addons enable metallb
+kubectl apply -f srcs/metallb.yaml
+minikube addons enable metrics-server
 minikube addons enable dashboard
-echo "Launching dashboard 🖥️"
-#minikube dashboard &> /dev/null &
-#eval $(minikube docker-env)
-#IP=$(kubectl get node -o=custom-columns='DATA:status.addresses[0].address' | sed -n 2p)
-#printf "Minikube IP: ${IP}"
-#docker build -t nginx_image ./srcs/nginx
-#kubectl create -f ./srcs/
+minikube dashboard &> /dev/null &
+eval $(SHELL=/bin/bash minikube -p minikube docker-env)
+printf "👷 building nginx image\n"
+docker build --network=host -t nginx_image ./srcs/nginx &> /dev/null 
+kubectl create -f ./srcs/deploy/

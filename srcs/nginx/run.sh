@@ -6,11 +6,13 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/19 17:49:28 by tmatis            #+#    #+#              #
-#    Updated: 2021/02/19 17:49:30 by tmatis           ###   ########.fr        #
+#    Updated: 2021/02/20 16:35:47 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-/usr/sbin/sshd
-telegraf &
-nginx
+openrc
+touch /run/openrc/softlevel
+service telegraf start
+service nginx start
+service sshd start
 tail -f /var/log/nginx/access.log
