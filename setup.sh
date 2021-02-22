@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/17 14:40:23 by tmatis            #+#    #+#              #
-#    Updated: 2021/02/20 22:09:59 by tmatis           ###   ########.fr        #
+#    Updated: 2021/02/22 22:25:47 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,6 +68,12 @@ minikube addons enable metrics-server
 minikube addons enable dashboard
 minikube dashboard &> /dev/null &
 eval $(SHELL=/bin/bash minikube -p minikube docker-env)
+printf "👷 building influxdb image\n"
+docker build --network=host -t influxdb_image ./srcs/influxdb &> /dev/null
+printf "👷 building mysql image\n"
+docker build --network=host -t mysql_image ./srcs/mysql &> /dev/null
 printf "👷 building nginx image\n"
-docker build --network=host -t nginx_image ./srcs/nginx &> /dev/null 
+docker build --network=host -t nginx_image ./srcs/nginx &> /dev/null
+printf "👷 building grafana image\n"
+docker build --network=host -t grafana_image ./srcs/grafana &> /dev/null
 kubectl create -f ./srcs/deploy/
