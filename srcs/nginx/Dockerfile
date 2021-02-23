@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/18 18:28:07 by tmatis            #+#    #+#              #
-#    Updated: 2021/02/20 15:39:06 by tmatis           ###   ########.fr        #
+#    Updated: 2021/02/23 22:07:35 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ WORKDIR "/home"
 
 RUN adduser -D -g 'www' www
 RUN mkdir /www
+COPY www /www
 RUN chown -R www:www /var/lib/nginx && chown -R www:www /www && \
 	mkdir -p /run/nginx
 
