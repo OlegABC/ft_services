@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/17 14:40:23 by tmatis            #+#    #+#              #
-#    Updated: 2021/02/22 22:25:47 by tmatis           ###   ########.fr        #
+#    Updated: 2021/02/23 16:26:05 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,6 +74,10 @@ printf "👷 building mysql image\n"
 docker build --network=host -t mysql_image ./srcs/mysql &> /dev/null
 printf "👷 building nginx image\n"
 docker build --network=host -t nginx_image ./srcs/nginx &> /dev/null
+printf "👷 building phpmyadmin image\n"
+docker build --network=host -t phpmyadmin_image ./srcs/phpmyadmin &> /dev/null
+printf "👷 building wordpress image\n"
+docker build --network=host -t wordpress_image ./srcs/wordpress &> /dev/null
 printf "👷 building grafana image\n"
 docker build --network=host -t grafana_image ./srcs/grafana &> /dev/null
 kubectl create -f ./srcs/deploy/

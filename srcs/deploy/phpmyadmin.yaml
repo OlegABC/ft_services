@@ -1,39 +1,39 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: grafana
+  name: phpmyadmin
   annotations:
     metallb.universe.tf/allow-shared-ip: shared
   labels:
-    app: grafana
+    app: phpmyadmin
 spec:
   type: LoadBalancer
   selector:
-    app: grafana
+    app: phpmyadmin
   ports:
-  - port: 3000
-    targetPort: 3000
+  - port: 5000
+    targetPort: 5000
     name: http
- 
+
 ---
 
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: grafana
+  name: phpmyadmin
 spec:
   selector:
     matchLabels:
-      app: grafana
-  serviceName: grafana
+      app: phpmyadmin
+  serviceName: phpmyadmin
   template:
     metadata:
       labels:
-        app: grafana
+        app: phpmyadmin
     spec:
       containers:
-      - name: grafana
-        image: grafana_image
+      - name: phpmyadmin
+        image: phpmyadmin_image
         livenessProbe:
             exec:
               command:
@@ -43,4 +43,4 @@ spec:
             periodSeconds: 10
         imagePullPolicy: Never
         ports:
-        - containerPort: 3000
+        - containerPort: 5000
