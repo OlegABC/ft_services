@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/17 14:40:23 by tmatis            #+#    #+#              #
-#    Updated: 2021/02/24 13:43:17 by tmatis           ###   ########.fr        #
+#    Updated: 2021/02/24 16:05:07 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,12 +62,15 @@ fi
 printf "\033[0;34mStarting minikube 🤩\n";
 minikube --vm-driver=docker start 
 printf "\033[0;34mSetup metallb\n";
+kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e "s/strictARP: false/strictARP: true/" | kubectl diff -f - -n kube-system &> /dev/null
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
 minikube addons enable metallb
 kubectl apply -f srcs/metallb.yaml
 minikube addons enable metrics-server
 minikube addons enable dashboard
 minikube dashboard &> /dev/null &
-eval $(SHELL=/bin/bash minikube -p minikube docker-env)
+eval $(SHELL=/bin/bash minikube docker-env)
 printf "👷 building influxdb image\n"
 docker build --network=host -t influxdb_image ./srcs/influxdb &> /dev/null
 printf "👷 building mysql image\n"
