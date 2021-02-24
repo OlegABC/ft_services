@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/17 14:40:23 by tmatis            #+#    #+#              #
-#    Updated: 2021/02/23 16:26:05 by tmatis           ###   ########.fr        #
+#    Updated: 2021/02/24 13:43:17 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,4 +80,6 @@ printf "👷 building wordpress image\n"
 docker build --network=host -t wordpress_image ./srcs/wordpress &> /dev/null
 printf "👷 building grafana image\n"
 docker build --network=host -t grafana_image ./srcs/grafana &> /dev/null
+printf "👷 building ftps image\n"
+docker build --network=host -t ftps_image ./srcs/ftps &> /dev/null
 kubectl create -f ./srcs/deploy/
