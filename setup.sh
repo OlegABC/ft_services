@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/17 14:40:23 by tmatis            #+#    #+#              #
-#    Updated: 2021/02/24 16:52:01 by tmatis           ###   ########.fr        #
+#    Updated: 2021/02/24 17:09:27 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,8 @@ else
 	chmod +x ./kubectl
 	sudo mv ./kubectl /usr/bin/kubectl
 fi
-
+printf "\033[0;34mSetup docker socket perm\n";
+sudo chmod 777 /var/run/docker.sock
 printf "\033[0;34mStarting minikube 🤩\n";
 minikube --vm-driver=docker start 
 eval $(SHELL=/bin/bash minikube docker-env)
