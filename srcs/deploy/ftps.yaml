@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ftps
+  annotations:
+    metallb.universe.tf/allow-shared-ip: shared
+  labels:
+    app: ftps
+spec:
+  type: LoadBalancer
+  selector:
+    app: ftps
+  ports:
+  - name: port-ftps-20
+    port: 20
+    targetPort: 20
+  - name: port-ftps-21
+    port: 21
+    targetPort: 21
+  - name: passive-3000
+    port: 30000
+    targetPort: 30000
+  - name: passive-3001
+    port: 30001
+    targetPort: 30001
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ftps
+spec:
+  selector:
+    matchLabels:
+      app: ftps
+  serviceName: ftps
+  template:
+    metadata:
+      labels:
+        app: ftps
+    spec:
+      containers:
+      - name: ftps
+        image: ftps_image
+        livenessProbe:
+            exec:
+              command:
+              - /bin/ash
+              - /home/livenessprobe.sh
+            initialDelaySeconds: 10
+            periodSeconds: 10
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 20
+        - containerPort: 21
+        - containerPort: 30000
+        - containerPort: 30001
